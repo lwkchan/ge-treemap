@@ -1,5 +1,36 @@
 <html>
-<body>
-  <script src="./index.js"></script>
-</body>
+  <head>
+    <style>
+      body {
+        font: 10px sans-serif;
+        position: relative;
+      }
+
+      .node {
+        box-sizing: border-box;
+        line-height: 1em;
+        overflow: hidden;
+        position: absolute;
+        white-space: pre;
+        background: #ddd;
+      }
+
+      .node-label,
+      .node-value {
+        margin: 4px;
+      }
+
+      .node-value {
+        margin-top: -2px;
+      }
+
+      .node-value {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chart"></div>
+    <script src="./index.js"></script>
+  </body>
 </html>
