@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel index.html",
-    "predeploy": "rm -rf dist && parcel build index.html --public-url https://lwkchan.github.io/ge-treemap/",
+    "start": "parcel src/index.html",
+    "predeploy": "rm -rf dist && parcel build src/index.html --public-url https://lwkchan.github.io/ge-treemap/",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [],
