@@ -34,43 +34,34 @@ d3.csv(require('./Results-Table 1.csv')).then(function(data) {
     .sort((a, b) => b.value - a.value)
 
   treemap(root)
-  console.log('treemap(root):', treemap(root))
 
   const rootNode = d3
     .select('#treemap')
-    .selectAll('.node')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .append('g')
+
+  rootNode
+    .selectAll('rect')
     .data(root.leaves())
     .enter()
-    .append('div')
-    .attr('class', 'node')
-    .style('left', function(d) {
-      return d.x0 + 'px'
+    .append('rect')
+    .attr('x', function(d) {
+      return d.x0
     })
-    .style('top', function(d) {
-      return d.y0 + 'px'
+    .attr('y', function(d) {
+      return d.y0
     })
-    .style('width', function(d) {
-      return d.x1 - d.x0 + 'px'
+    .attr('width', function(d) {
+      return d.x1 - d.x0
     })
-    .style('height', function(d) {
-      return d.y1 - d.y0 + 'px'
+    .attr('height', function(d) {
+      return d.y1 - d.y0
     })
-    .style('background', function(d) {
+    .style('stroke', 'black')
+    .style('fill', function(d) {
       const party = d.parent.data.key
       return COLOR_MAPPING[party]
-    })
-
-  rootNode
-    .append('div')
-    .attr('class', 'node-label')
-    .text(function(d) {
-      return d.data.key
-    })
-
-  rootNode
-    .append('div')
-    .attr('class', 'node-value')
-    .text(function(d) {
-      return d.data.value
     })
 })
