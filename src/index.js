@@ -1,8 +1,7 @@
 import * as d3 from 'd3'
 
-let width = 1500,
-  height = 1500
-
+const width = document.querySelector('#treemap').getBoundingClientRect().width
+const height = 900
 const COLOR_MAPPING = {
   Conservative: '#0087DC',
   Labour: '#DC241f',
@@ -24,7 +23,7 @@ d3.csv(require('./Results-Table 1.csv')).then(function(data) {
   const treemap = d3
     .treemap()
     .size([width, height])
-    .padding(1)
+    .padding(3)
     .round(true)
 
   const root = d3
@@ -35,10 +34,10 @@ d3.csv(require('./Results-Table 1.csv')).then(function(data) {
     .sort((a, b) => b.value - a.value)
 
   treemap(root)
-  console.log(root.leaves())
+  console.log('treemap(root):', treemap(root))
 
-  var node = d3
-    .select('body')
+  const rootNode = d3
+    .select('#treemap')
     .selectAll('.node')
     .data(root.leaves())
     .enter()
@@ -61,14 +60,14 @@ d3.csv(require('./Results-Table 1.csv')).then(function(data) {
       return COLOR_MAPPING[party]
     })
 
-  node
+  rootNode
     .append('div')
     .attr('class', 'node-label')
     .text(function(d) {
       return d.data.key
     })
 
-  node
+  rootNode
     .append('div')
     .attr('class', 'node-value')
     .text(function(d) {

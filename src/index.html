@@ -9,37 +9,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <style>
-      body {
-        font: 10px sans-serif;
-        position: relative;
-      }
-
-      .node {
-        box-sizing: border-box;
-        line-height: 1em;
-        overflow: hidden;
-        position: absolute;
-        white-space: pre;
-        background: #ddd;
-      }
-
-      .node-label,
-      .node-value {
-        margin: 4px;
-      }
-
-      .node-value {
-        margin-top: -2px;
-      }
-
-      .node-value {
-        font-weight: bold;
-      }
-    </style>
+    <link rel="stylesheet" href="./styles.scss" />
   </head>
   <body>
-    <div class="chart"></div>
+    <div class="container">
+      <h1>UK 2015 General Election Treemap</h1>
+      <div id="treemap"></div>
+    </div>
     <script type="text/javascript" src="./index.js"></script>
   </body>
 </html>
