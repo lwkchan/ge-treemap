@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles.scss"],"names":[],"mappings":"AAAA,KACE,oBAAA,CACA,kBAGF,WACE,UAAA,CACA,gBAAA,CACA,cAGF,SACE","file":"styles.286e7521.css","sourceRoot":"../src","sourcesContent":["body {\n  font: 10px sans-serif;\n  position: relative;\n}\n\n.container {\n  width: 100%;\n  max-width: 1250px;\n  margin: 0 auto;\n}\n\n#treemap {\n  position: relative;\n}\n"]}
