@@ -1,4 +1,8 @@
 import * as d3 from 'd3'
+import PubSub from './Pubsub'
+import Pubsub from './Pubsub'
+
+const currentConstituencyTracker = new Pubsub()
 
 const width = document.querySelector('#treemap').getBoundingClientRect().width
 const height = 900
@@ -11,20 +15,23 @@ const COLOR_MAPPING = {
   'Green Party': '#6AB023'
 }
 
+// Nesting allows elements in an array to be grouped into a hierarchical tree structure
+const nest = d3
+  .nest()
+  .key(d => d['Party Identifer'])
+  .key(d => d['Constituency'])
+  .rollup(d => d3.sum(d, d => d['Valid votes']))
+
+const treemap = d3
+  .treemap()
+  .size([width, height])
+  .padding(3)
+  .round(true)
+
+let currentConstituency = null
+
 d3.csv(require('./Results-Table 1.csv')).then(function(data) {
   // ONS Code,PANO,Constituency,Surname,First name,Party,Party Identifer,Valid votes
-  //   Nesting allows elements in an array to be grouped into a hierarchical tree structure
-  const nest = d3
-    .nest()
-    .key(d => d['Party Identifer'])
-    .key(d => d['Constituency'])
-    .rollup(d => d3.sum(d, d => d['Valid votes']))
-
-  const treemap = d3
-    .treemap()
-    .size([width, height])
-    .padding(3)
-    .round(true)
 
   const root = d3
     .hierarchy({ values: nest.entries(data) }, function(d) {
@@ -64,4 +71,23 @@ d3.csv(require('./Results-Table 1.csv')).then(function(data) {
       const party = d.parent.data.key
       return COLOR_MAPPING[party]
     })
+    .on('mouseover', function(d) {
+      let currentConstituency = d.data.key
+      currentConstituencyTracker.trigger(
+        'SET_CURRENT_CONSTITUENCY',
+        currentConstituency
+      )
+    })
+    .on('mouseout', function(d) {
+      currentConstituencyTracker.trigger('SET_CURRENT_CONSTITUENCY', null)
+    })
 })
+
+currentConstituencyTracker.on(
+  'SET_CURRENT_CONSTITUENCY',
+  currentConstituency => {
+    document.querySelector(
+      '#currentConstituency'
+    ).innerHTML = currentConstituency
+  }
+)
