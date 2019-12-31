@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as d3 from 'd3'
 
 const COLOR_MAPPING = {
@@ -12,8 +12,8 @@ const COLOR_MAPPING = {
 
 const Treemap = props => {
   const { width, height, data } = props
+  const [selectedCell, setSelectedCell] = useState(null)
 
-  // ONS Code,PANO,Constituency,Surname,First name,Party,Party Identifer,Valid votes
   // Nesting allows elements in an array to be grouped into a hierarchical tree structure
   const nest = d3
     .nest()
@@ -37,22 +37,42 @@ const Treemap = props => {
   treemap(root)
 
   return (
-    <svg width={width} height={height}>
-      {root.leaves().map(({ x0, x1, y1, y0, parent }, i) => {
-        const party = parent.data.key
-        const fill = COLOR_MAPPING[party]
-        return (
-          <rect
-            key={i}
-            x={x0}
-            y={y0}
-            width={x1 - x0}
-            height={y1 - y0}
-            fill={fill}
-          />
-        )
-      })}
-    </svg>
+    <>
+      {selectedCell ? (
+        <div>
+          <p>Current constituency: {selectedCell.constituency}</p>
+          <p>
+            {selectedCell.votes} votes for {selectedCell.party}
+          </p>
+        </div>
+      ) : null}
+      <svg width={width} height={height}>
+        {root.leaves().map(({ x0, x1, y1, y0, parent, data, ...rest }) => {
+          const party = parent.data.key
+          const fill = COLOR_MAPPING[party]
+          return (
+            <rect
+              key={`${data.key}_${data.value}`}
+              x={x0}
+              y={y0}
+              width={x1 - x0}
+              height={y1 - y0}
+              fill={fill}
+              onMouseOver={() => {
+                setSelectedCell({
+                  constituency: data.key,
+                  votes: data.value,
+                  party
+                })
+              }}
+              onMouseOut={() => {
+                setSelectedCell(null)
+              }}
+            />
+          )
+        })}
+      </svg>
+    </>
   )
 }
 
